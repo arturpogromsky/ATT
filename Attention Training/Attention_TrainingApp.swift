@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct Attention_TrainingApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
+	@StateObject var playerViewModel = PlayerViewModel()
+	@StateObject var soundsStore = SoundsStore()
+	var body: some Scene {
+		WindowGroup {
+			PlayerMainView()
+				.environmentObject(playerViewModel)
+		}
+	}
 }
