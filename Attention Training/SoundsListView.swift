@@ -10,7 +10,7 @@ import SwiftUI
 struct SoundsListView: View {
 	// Добавить позже, пока воспользоваться preinstalledSounds
 	//@ObservedObject var soundsStore: SoundsStore
-	@EnvironmentObject var player: PlayerViewModel
+	@EnvironmentObject var player: Player
 	@State private var selectedSoundsID = Set<UUID>()
 	@State var editMode: EditMode = .active
 	@Environment(\.presentationMode) var presentationMode
@@ -34,6 +34,6 @@ struct SoundsListView: View {
 struct SoundsListView_Previews: PreviewProvider {
 	static var previews: some View {
 		SoundsListView()
-			.environmentObject(PlayerViewModel())
+			.environmentObject(Player())
 	}
 }

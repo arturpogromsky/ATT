@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct Attention_TrainingApp: App {
-	@StateObject var playerViewModel = PlayerViewModel()
+	@StateObject var playerViewModel = Player()
 	@StateObject var soundsStore = SoundsStore()
 	var body: some Scene {
 		WindowGroup {

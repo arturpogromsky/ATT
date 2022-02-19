@@ -14,10 +14,10 @@
 		EE5D275027B2D4E40010D27A /* SoundsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5D274F27B2D4E40010D27A /* SoundsListView.swift */; };
 		EE98F16727AAD59B00BF75B4 /* SoundsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE98F16627AAD59B00BF75B4 /* SoundsStore.swift */; };
 		EE9F386E279E8FB400786989 /* Attention_TrainingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9F386D279E8FB400786989 /* Attention_TrainingApp.swift */; };
-		EE9F3870279E8FB400786989 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9F386F279E8FB400786989 /* ContentView.swift */; };
 		EE9F3872279E8FB500786989 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE9F3871279E8FB500786989 /* Assets.xcassets */; };
 		EE9F3875279E8FB500786989 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE9F3874279E8FB500786989 /* Preview Assets.xcassets */; };
-		EE9F387C279E95E700786989 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9F387B279E95E700786989 /* Player.swift */; };
+		EE9F387C279E95E700786989 /* MultipleSoundsPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9F387B279E95E700786989 /* MultipleSoundsPlayer.swift */; };
+		EED0E10427B42088003A6E33 /* SingleSoundPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED0E10327B42088003A6E33 /* SingleSoundPlayerView.swift */; };
 		EEF32DD727A97CF600DE71CB /* short.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EEF32DD227A97CF600DE71CB /* short.mp3 */; };
 		EEF32DD827A97CF600DE71CB /* water.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EEF32DD327A97CF600DE71CB /* water.mp3 */; };
 		EEF32DD927A97CF600DE71CB /* birds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EEF32DD427A97CF600DE71CB /* birds.mp3 */; };
@@ -34,10 +34,10 @@
 		EE98F16627AAD59B00BF75B4 /* SoundsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundsStore.swift; sourceTree = "<group>"; };
 		EE9F386A279E8FB400786989 /* Attention Training.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Attention Training.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE9F386D279E8FB400786989 /* Attention_TrainingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attention_TrainingApp.swift; sourceTree = "<group>"; };
-		EE9F386F279E8FB400786989 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EE9F3871279E8FB500786989 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EE9F3874279E8FB500786989 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		EE9F387B279E95E700786989 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		EE9F387B279E95E700786989 /* MultipleSoundsPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSoundsPlayer.swift; sourceTree = "<group>"; };
+		EED0E10327B42088003A6E33 /* SingleSoundPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSoundPlayerView.swift; sourceTree = "<group>"; };
 		EEF32DD227A97CF600DE71CB /* short.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = short.mp3; sourceTree = "<group>"; };
 		EEF32DD327A97CF600DE71CB /* water.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = water.mp3; sourceTree = "<group>"; };
 		EEF32DD427A97CF600DE71CB /* birds.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = birds.mp3; sourceTree = "<group>"; };
@@ -76,14 +76,14 @@
 			isa = PBXGroup;
 			children = (
 				EEF32DD127A97AD400DE71CB /* Audio */,
-				EE9F387B279E95E700786989 /* Player.swift */,
+				EE9F387B279E95E700786989 /* MultipleSoundsPlayer.swift */,
 				EE98F16627AAD59B00BF75B4 /* SoundsStore.swift */,
 				EE9F386D279E8FB400786989 /* Attention_TrainingApp.swift */,
 				EE3B955827AD91FE003B7233 /* PlayerMainView.swift */,
 				EE3B955A27AD9230003B7233 /* TrainingView.swift */,
 				EE5D274D27B2D0050010D27A /* Extentions.swift */,
 				EE5D274F27B2D4E40010D27A /* SoundsListView.swift */,
-				EE9F386F279E8FB400786989 /* ContentView.swift */,
+				EED0E10327B42088003A6E33 /* SingleSoundPlayerView.swift */,
 				EE9F3871279E8FB500786989 /* Assets.xcassets */,
 				EE9F3873279E8FB500786989 /* Preview Content */,
 			);
@@ -191,11 +191,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE9F3870279E8FB400786989 /* ContentView.swift in Sources */,
 				EE98F16727AAD59B00BF75B4 /* SoundsStore.swift in Sources */,
 				EE5D275027B2D4E40010D27A /* SoundsListView.swift in Sources */,
-				EE9F387C279E95E700786989 /* Player.swift in Sources */,
+				EE9F387C279E95E700786989 /* MultipleSoundsPlayer.swift in Sources */,
 				EE9F386E279E8FB400786989 /* Attention_TrainingApp.swift in Sources */,
+				EED0E10427B42088003A6E33 /* SingleSoundPlayerView.swift in Sources */,
 				EE3B955B27AD9230003B7233 /* TrainingView.swift in Sources */,
 				EE3B955927AD91FE003B7233 /* PlayerMainView.swift in Sources */,
 				EE5D274E27B2D0050010D27A /* Extentions.swift in Sources */,

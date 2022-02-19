@@ -7,11 +7,13 @@
 
 import Foundation
 import AVFoundation
+import SwiftUI
+
 
 //MARK: Model
 
 /// Struct, that simultaniously plays multiple files from the `playlist`.
-struct Player {
+struct MultipleSoundsPlayer {
 	/// Storage for sounds, that are scheduled to play.
 	var playlist: [SoundBundle] = [] // SoundsStore.preinstalledSounds
 	
@@ -42,13 +44,21 @@ struct Player {
 	mutating func add(_ sounds: [SoundBundle]) {
 		playlist.append(contentsOf: sounds)
 	}
+	
+	/// Удалить `sounds` из плейлиста
+	mutating func remove(_ sounds: [SoundBundle]) {
+		for sound in sounds {
+			if let index = playlist.index(matching: sound) {
+				playlist.remove(at: index)
+			}
+		}
+	}
 }
 
 
-
 //MARK: ViewModel
-class PlayerViewModel: ObservableObject {
-	@Published private(set) var player = Player()
+class Player: ObservableObject {
+	@Published private(set) var player = MultipleSoundsPlayer()
 	
 	var playlist: [SoundBundle] {
 		player.playlist
@@ -66,11 +76,16 @@ class PlayerViewModel: ObservableObject {
 		}
 	}
 	
-	/// Добавить в плейлист те звуки, которых там еще нет
+	/// Удалить из `sounds` звуки, которые уже есть в плейлисте. Добавить оставшиеся в плейлист.
 	func add(_ sounds: [SoundBundle]) {
 		// let sounds = SoundsStore.preinstalledSounds.filter { sounds.contains($0.id) }
 		let uniqueSounds = sounds.filter { !playlist.contains($0) }
 		player.add(uniqueSounds)
+	}
+	
+	/// Удалить `sounds` из плейлиста
+	func remove(_ sounds: [SoundBundle]) {
+		player.remove(sounds)
 	}
 	
 	struct Constants {

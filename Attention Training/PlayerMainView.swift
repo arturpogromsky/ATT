@@ -9,12 +9,12 @@ import SwiftUI
 
 
 struct PlayerMainView: View {
-	@EnvironmentObject var playerViewModel: PlayerViewModel
+	@EnvironmentObject var player: Player
 	@State private var soundsListIsShowing = false
 	
 	/// Угол между центрами двух кругов, в радианах
 	var sector: Double {
-		Double(2.0 * .pi / Double(playerViewModel.playlist.count))
+		Double(2.0 * .pi / Double(player.playlist.count))
 	}
 	
 	/// Диаметр круга
@@ -22,43 +22,48 @@ struct PlayerMainView: View {
 		2.0 * CGFloat(Constants.offset.height * sin(sector / 2))
 	}
 	
+	//MARK: - Body
 	var body: some View {
 		VStack {
 			ZStack(alignment: .center) {
 				Color.black
 				toolbar
+				
 				// Круглые цветные кнопки, отображающие текущие звуки. При нажатии позволяют изменить выбранный звук
 				coloredCircleButtons
-				// Добавить новый звук в плейлист
-				//	newSoundButton
+				
+//				// Добавить новый звук в плейлист
+//				newSoundButton
 			}
 			// Начать тренировку
 			startButton
 		}
+		
 		.background(Color.black)
 		.sheet(isPresented: $soundsListIsShowing, onDismiss: nil) {
 			SoundsListView()
 		}
 	}
 	
-	@ViewBuilder
-	var newSoundButton: some View {
-		let offset = playerViewModel.player.playlist.isEmpty ? CGSize.zero : Constants.offset
-		Image(systemName: "plus.circle.fill")
-		
-			.resizable()
-			.foregroundColor(.white)
-			.rotationEffect(.radians(sector))
-			.foregroundColor(.white)
-			.offset(offset)
-			.rotationEffect(.radians(-sector))
-			.frame(width: diameter * Constants.plusButtonScale,
-						 height: diameter * Constants.plusButtonScale)
-	}
+	//MARK: -
+	
+//	@ViewBuilder
+//	var newSoundButton: some View {
+//		let offset = playerViewModel.player.playlist.isEmpty ? CGSize.zero : Constants.offset
+//		Image(systemName: "plus.circle.fill")
+//			.resizable()
+//			.foregroundColor(.white)
+//			.rotationEffect(.radians(sector))
+//			.foregroundColor(.white)
+//			.offset(offset)
+//			.rotationEffect(.radians(-sector))
+//			.frame(width: diameter * Constants.plusButtonScale,
+//						 height: diameter * Constants.plusButtonScale)
+//	}
 	
 	var startButton: some View {
 		Button {
-			playerViewModel.play()
+			player.play()
 		} label: {
 			RoundedRectangle(cornerRadius: Constants.cornerRadius)
 				.foregroundColor(.accentColor)
@@ -80,8 +85,8 @@ struct PlayerMainView: View {
 	}
 	
 	var coloredCircleButtons: some View {
-		ForEach(playerViewModel.playlist) { soundBundle in
-			let index = playerViewModel.playlist.index(matching: soundBundle)!
+		ForEach(player.playlist) { soundBundle in
+			let index = player.playlist.index(matching: soundBundle)!
 			let angle = Double(index) * sector
 			let text = soundBundle.sounds
 				.map { $0.capitalized }
@@ -116,7 +121,7 @@ struct ColoredCircleButton: View {
 	var diameter: CGFloat
 	var body: some View {
 		Circle()
-			.frame(width: diameter)
+			.frame(width: diameter, height: diameter)
 			.overlay {
 				Text(text)
 					.foregroundColor(.white)
@@ -160,7 +165,6 @@ fileprivate struct Constants {
 struct SceneEditorView_Previews: PreviewProvider {
 	static var previews: some View {
 		PlayerMainView()
-			.environmentObject(PlayerViewModel())
+			.environmentObject(Player())
 	}
 }
-
