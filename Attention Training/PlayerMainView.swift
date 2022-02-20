@@ -11,55 +11,49 @@ import SwiftUI
 struct PlayerMainView: View {
 	@EnvironmentObject var player: Player
 	@State private var soundsListIsShowing = false
-	
-	/// Угол между центрами двух кругов, в радианах
-	var sector: Double {
-		Double(2.0 * .pi / Double(player.playlist.count))
-	}
-	
-	/// Диаметр круга
-	var diameter: CGFloat {
-		2.0 * CGFloat(Constants.offset.height * sin(sector / 2))
-	}
+	@State private var popupIsShowing = false
+	@State private var soundToEdit: SoundBundle?
 	
 	//MARK: - Body
 	var body: some View {
 		VStack {
 			ZStack(alignment: .center) {
-				Color.black
+				background
+				
+				// Тулбар для кнопок(добавление новых звуков и т.д.)
 				toolbar
 				
 				// Круглые цветные кнопки, отображающие текущие звуки. При нажатии позволяют изменить выбранный звук
 				coloredCircleButtons
 				
-//				// Добавить новый звук в плейлист
-//				newSoundButton
+				// При нажатии на цветной круг свойству soundToEdit присваивается новое значение
+				// После чего открывается редактор с плеером
+				if let soundToEdit = soundToEdit {
+					EditSoundView(for: soundToEdit)
+						.zIndex(1)
+						.transition(AnyTransition.scale)
+						.padding()
+				}
 			}
+			
 			// Начать тренировку
 			startButton
 		}
-		
-		.background(Color.black)
+		.background(Color("background"))
 		.sheet(isPresented: $soundsListIsShowing, onDismiss: nil) {
 			SoundsListView()
 		}
 	}
 	
 	//MARK: -
-	
-//	@ViewBuilder
-//	var newSoundButton: some View {
-//		let offset = playerViewModel.player.playlist.isEmpty ? CGSize.zero : Constants.offset
-//		Image(systemName: "plus.circle.fill")
-//			.resizable()
-//			.foregroundColor(.white)
-//			.rotationEffect(.radians(sector))
-//			.foregroundColor(.white)
-//			.offset(offset)
-//			.rotationEffect(.radians(-sector))
-//			.frame(width: diameter * Constants.plusButtonScale,
-//						 height: diameter * Constants.plusButtonScale)
-//	}
+	var background: some View {
+		Color("background")
+			.onTapGesture {
+				withAnimation {
+					soundToEdit = nil
+				}
+			}
+	}
 	
 	var startButton: some View {
 		Button {
@@ -73,10 +67,9 @@ struct PlayerMainView: View {
 						.foregroundColor(.white)
 				}
 				.overlay {
-					// Заменить на buttonBorderShape
 					RoundedRectangle(cornerRadius: Constants.cornerRadius)
 						.strokeBorder(lineWidth: Constants.lineWidth)
-						.foregroundColor(.white)
+						.foregroundColor(Color("border"))
 				}
 				.frame(height: 70)
 				.padding(.horizontal, 49.0)
@@ -86,13 +79,12 @@ struct PlayerMainView: View {
 	
 	var coloredCircleButtons: some View {
 		ForEach(player.playlist) { soundBundle in
-			let index = player.playlist.index(matching: soundBundle)!
-			let angle = Double(index) * sector
-			let text = soundBundle.sounds
-				.map { $0.capitalized }
-				.joined(separator: "\n")
-			ColoredCircleButton(angle: angle, text: text, diameter: diameter)
-				.foregroundColor(Constants.colors[index])
+			ColoredCircleButton(soundBundle: soundBundle)
+				.onTapGesture {
+					withAnimation {
+						soundToEdit = soundBundle
+					}
+				}
 		}
 	}
 	
@@ -116,29 +108,57 @@ struct PlayerMainView: View {
 
 
 struct ColoredCircleButton: View {
-	var angle: Double
-	var text: String
-	var diameter: CGFloat
+	@EnvironmentObject var player: Player
+	var soundBundle: SoundBundle
+	
+	/// Индекс звука в плейлисте
+	var index: Int {
+		player.playlist.index(matching: soundBundle)!
+	}
+	
+	/// Угол, задающий положение круга
+	var angle: Double {
+		Double(index) * sector
+	}
+	
+	/// Название звука, склеивается из названий звуков, соединенных символом новой строки
+	var text: String {
+		soundBundle.sounds
+			.map { $0.capitalized }
+			.joined(separator: "\n")
+	}
+	
+	/// Угол между центрами двух кругов, в радианах
+	var sector: Double {
+		Double(2.0 * .pi / Double(player.playlist.count))
+	}
+	
+	/// Диаметр круга
+	var diameter: CGFloat {
+		2.0 * CGFloat(Constants.offset.height * sin(sector / 2))
+	}
+	
 	var body: some View {
 		Circle()
-			.frame(width: diameter, height: diameter)
+			.frame(width: player.playlist.count == 1 ? 220 : diameter,
+						 height: player.playlist.count == 1 ? 220 : diameter)
 			.overlay {
 				Text(text)
 					.foregroundColor(.white)
 					.font(.headline)
 					.fontWeight(.bold)
 					.multilineTextAlignment(.center)
-					.lineLimit(3)
+					.scaledToFit()
 					.rotationEffect(.radians(-angle))
 			}
 			.overlay {
-				// Заменить на buttonBorderShape
 				Circle()
 					.strokeBorder(lineWidth: Constants.lineWidth)
-					.foregroundColor(.white)
+					.foregroundColor(Color("border"))
 			}
-			.offset(Constants.offset)
+			.offset(player.playlist.count == 1 ? CGSize.zero : Constants.offset)
 			.rotationEffect(.radians(angle))
+			.foregroundColor(Constants.colors[index])
 	}
 }
 
@@ -151,15 +171,6 @@ fileprivate struct Constants {
 	static let plusButtonScale: CGFloat = 0.7
 	static let colors: [Color] = [.purple, .mint, .red, .yellow, .green, .orange, .cyan, .pink, .brown]
 }
-
-
-
-
-
-
-
-
-
 
 
 struct SceneEditorView_Previews: PreviewProvider {

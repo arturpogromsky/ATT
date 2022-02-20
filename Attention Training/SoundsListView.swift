@@ -16,17 +16,22 @@ struct SoundsListView: View {
 	@Environment(\.presentationMode) var presentationMode
 	var body: some View {
 		VStack(alignment: .center) {
+			
 			List(SoundsStore.preinstalledSounds, selection: $selectedSoundsID) { sound in
 				Text(sound.sounds.joined(separator: ", ").capitalized)
 			}
 			.environment(\.editMode, $editMode)
+			
 			Button {
 				let selectedSounds = SoundsStore.preinstalledSounds.filter { selectedSoundsID.contains($0.id) }
 				player.add(selectedSounds)
 				presentationMode.wrappedValue.dismiss()
+				
 			} label: {
 				Text("Add selected")
+					.font(.title2)
 			}
+			.padding()
 		}
 	}
 }

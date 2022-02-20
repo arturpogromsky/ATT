@@ -14,16 +14,21 @@ import AVFAudio
 /// - Изменять громкость
 /// - Изменять баланс громкости
 /// [Опционально] добавить осцилограмму
-struct SingleSoundPlayerView: View {
+struct EditSoundView: View {
+	@EnvironmentObject var mainPlayer: Player
+	
 	// Воспроизводит ли сейчас плеер.
 	@State private var isPlaying = false
+	
 	// Звук, переданный из view выше по иерархии.
-	@Binding var sound: SoundBundle
+	@State var sound: SoundBundle
+	
 	// Плеер для воспроизведения измененного звука
 	var player: AVAudioPlayer?
+	
 	// Инициализатор принимает на входе Binding, которым инициализирует _sound, после чего создает и настраивает плеер
-	init(for sound: Binding<SoundBundle>) {
-		self._sound = sound
+	init(for sound: SoundBundle) {
+		self._sound = State(initialValue: sound)
 		self.player = try? AVAudioPlayer(contentsOf: self.sound.url)
 		self.player?.pan = self.sound.pan
 		self.player?.volume = self.sound.volume
@@ -31,19 +36,27 @@ struct SingleSoundPlayerView: View {
 	
 	var body: some View {
 		VStack {
+			Text(sound.sounds.joined(separator: ", ").capitalized)
+				.font(.largeTitle)
+			
 			// Плеер и кнопки прокрутки вперед/назад
 			playbackControllers
+			
 			// Настройка баланса громкости
 			audioBalanceSlider
+			
 			// Настройка звука
 			volumeSlider
 		}
 		.padding()
+		.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 15))
+		
 	}
 	
 	var playbackControllers: some View {
 		HStack {
 			Spacer()
+			
 			// Кнопка прокрутки назад
 			Button {
 				// Для прокрутки на 15 секунд в AVAudioPlayer достаточно просто изменить currentTime на 15 секунд
@@ -103,6 +116,7 @@ struct SingleSoundPlayerView: View {
 						isPlaying = false
 					}
 					player?.pan = sound.pan
+					mainPlayer.updateSound(matching: sound)
 				}
 				Text("R")
 			}
@@ -123,6 +137,7 @@ struct SingleSoundPlayerView: View {
 						isPlaying = false
 					}
 					player?.volume = sound.volume
+					mainPlayer.updateSound(matching: sound)
 				}
 				.padding(.horizontal)
 			}
@@ -132,11 +147,15 @@ struct SingleSoundPlayerView: View {
 	struct Constants {
 		static let playButtonSize: CGFloat = 100
 		static let forwardBackwardButtonSize: CGFloat = 60
+		static let cornerRadius: CGFloat = 15
+		static let lineWidth: CGFloat = 2
 	}
 }
 
 struct SingleSoundPlayerView_Previews: PreviewProvider {
 	static var previews: some View {
-		SingleSoundPlayerView(for: .constant(SoundBundle(url: Bundle.main.url(forResource: "birds", withExtension: "mp3")!, sounds: ["birds"])))
+		EditSoundView(for: SoundBundle(url: Bundle.main.url(forResource: "birds", withExtension: "mp3")!, sounds: ["birds"]))
+			.previewLayout(.sizeThatFits)
+			.environmentObject(Player())
 	}
 }

@@ -7,10 +7,9 @@
 
 import Foundation
 import AVFoundation
-import SwiftUI
 
 
-//MARK: Model
+//MARK: - Model
 
 /// Struct, that simultaniously plays multiple files from the `playlist`.
 struct MultipleSoundsPlayer {
@@ -25,6 +24,7 @@ struct MultipleSoundsPlayer {
 			playlist[index].player?.volume = playlist[index].volume
 			playlist[index].player?.numberOfLoops = .max
 			playlist[index].player?.play()
+			// Escaping closure captures mutating `self` parameters
 		}
 	}
 	
@@ -53,10 +53,16 @@ struct MultipleSoundsPlayer {
 			}
 		}
 	}
+	
+	mutating func updateSound(matching anotherSound: SoundBundle) {
+		if let index = playlist.index(matching: anotherSound) {
+			playlist[index] = anotherSound
+		}
+	}
 }
 
 
-//MARK: ViewModel
+//MARK: - ViewModel
 class Player: ObservableObject {
 	@Published private(set) var player = MultipleSoundsPlayer()
 	
@@ -66,7 +72,8 @@ class Player: ObservableObject {
 	
 	var shutDownTimer: Timer?
 	
-	//MARK: Intent functions
+	//MARK: - Intent functions
+	
 	/// Play all sounds in `playlist`, then, after duration seconds, stop and delete them from `playlist`
 	func play(during time: Double = Constants.duration) {
 		player.play()
@@ -86,6 +93,10 @@ class Player: ObservableObject {
 	/// Удалить `sounds` из плейлиста
 	func remove(_ sounds: [SoundBundle]) {
 		player.remove(sounds)
+	}
+	
+	func updateSound(matching anotherSound: SoundBundle) {
+		player.updateSound(matching: anotherSound)
 	}
 	
 	struct Constants {
