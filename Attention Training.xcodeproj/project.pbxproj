@@ -10,6 +10,7 @@
 		EE3B955927AD91FE003B7233 /* PlayerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3B955827AD91FE003B7233 /* PlayerMainView.swift */; };
 		EE3B955B27AD9230003B7233 /* TrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3B955A27AD9230003B7233 /* TrainingView.swift */; };
 		EE3B955D27ADECE3003B7233 /* clock.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EE3B955C27ADECE3003B7233 /* clock.mp3 */; };
+		EE4332C027C3F949002AEEB2 /* SoundNamesScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4332BF27C3F949002AEEB2 /* SoundNamesScheduler.swift */; };
 		EE5D274E27B2D0050010D27A /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5D274D27B2D0050010D27A /* Extentions.swift */; };
 		EE5D275027B2D4E40010D27A /* SoundsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5D274F27B2D4E40010D27A /* SoundsListView.swift */; };
 		EE98F16727AAD59B00BF75B4 /* SoundsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE98F16627AAD59B00BF75B4 /* SoundsStore.swift */; };
@@ -29,6 +30,7 @@
 		EE3B955827AD91FE003B7233 /* PlayerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerMainView.swift; sourceTree = "<group>"; };
 		EE3B955A27AD9230003B7233 /* TrainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingView.swift; sourceTree = "<group>"; };
 		EE3B955C27ADECE3003B7233 /* clock.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clock.mp3; sourceTree = "<group>"; };
+		EE4332BF27C3F949002AEEB2 /* SoundNamesScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNamesScheduler.swift; sourceTree = "<group>"; };
 		EE5D274D27B2D0050010D27A /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 		EE5D274F27B2D4E40010D27A /* SoundsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundsListView.swift; sourceTree = "<group>"; };
 		EE98F16627AAD59B00BF75B4 /* SoundsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundsStore.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				EE9F386D279E8FB400786989 /* Attention_TrainingApp.swift */,
 				EE3B955827AD91FE003B7233 /* PlayerMainView.swift */,
 				EE3B955A27AD9230003B7233 /* TrainingView.swift */,
+				EE4332BF27C3F949002AEEB2 /* SoundNamesScheduler.swift */,
 				EE5D274D27B2D0050010D27A /* Extentions.swift */,
 				EE5D274F27B2D4E40010D27A /* SoundsListView.swift */,
 				EED0E10327B42088003A6E33 /* EditSoundView.swift */,
@@ -196,6 +199,7 @@
 				EE9F387C279E95E700786989 /* MultipleSoundsPlayer.swift in Sources */,
 				EE9F386E279E8FB400786989 /* Attention_TrainingApp.swift in Sources */,
 				EED0E10427B42088003A6E33 /* EditSoundView.swift in Sources */,
+				EE4332C027C3F949002AEEB2 /* SoundNamesScheduler.swift in Sources */,
 				EE3B955B27AD9230003B7233 /* TrainingView.swift in Sources */,
 				EE3B955927AD91FE003B7233 /* PlayerMainView.swift in Sources */,
 				EE5D274E27B2D0050010D27A /* Extentions.swift in Sources */,

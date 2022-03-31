@@ -21,13 +21,13 @@ struct EditSoundView: View {
 	@State private var isPlaying = false
 	
 	// Звук, переданный из view выше по иерархии.
-	@State var sound: SoundBundle
+	@State var sound: SoundWithPlayer
 	
 	// Плеер для воспроизведения измененного звука
 	var player: AVAudioPlayer?
 	
 	// Инициализатор принимает на входе Binding, которым инициализирует _sound, после чего создает и настраивает плеер
-	init(for sound: SoundBundle) {
+	init(for sound: SoundWithPlayer) {
 		self._sound = State(initialValue: sound)
 		self.player = try? AVAudioPlayer(contentsOf: self.sound.url)
 		self.player?.pan = self.sound.pan
@@ -36,7 +36,8 @@ struct EditSoundView: View {
 	
 	var body: some View {
 		VStack {
-			Text(sound.sounds.joined(separator: ", ").capitalized)
+			// Названия звуков
+			Text(sound.names.joined(separator: ", ").capitalized)
 				.font(.largeTitle)
 			
 			// Плеер и кнопки прокрутки вперед/назад
@@ -144,6 +145,7 @@ struct EditSoundView: View {
 		}
 		.font(.title2)
 	}
+	
 	struct Constants {
 		static let playButtonSize: CGFloat = 100
 		static let forwardBackwardButtonSize: CGFloat = 60
@@ -152,9 +154,10 @@ struct EditSoundView: View {
 	}
 }
 
-struct SingleSoundPlayerView_Previews: PreviewProvider {
+
+struct EditSoundView_Previews: PreviewProvider {
 	static var previews: some View {
-		EditSoundView(for: SoundBundle(url: Bundle.main.url(forResource: "birds", withExtension: "mp3")!, sounds: ["birds"]))
+		EditSoundView(for: SoundWithPlayer(url: Bundle.main.url(forResource: "birds", withExtension: "mp3")!, names: ["birds"]))
 			.previewLayout(.sizeThatFits)
 			.environmentObject(Player())
 	}

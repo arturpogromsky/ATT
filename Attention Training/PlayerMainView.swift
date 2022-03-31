@@ -12,7 +12,7 @@ struct PlayerMainView: View {
 	@EnvironmentObject var player: Player
 	@State private var soundsListIsShowing = false
 	@State private var popupIsShowing = false
-	@State private var soundToEdit: SoundBundle?
+	@State private var soundToEdit: SoundWithPlayer?
 	
 	//MARK: - Body
 	var body: some View {
@@ -30,7 +30,7 @@ struct PlayerMainView: View {
 				// После чего открывается редактор с плеером
 				if let soundToEdit = soundToEdit {
 					EditSoundView(for: soundToEdit)
-						.zIndex(1)
+						.zIndex(1) // Фикс бага, при котором не отрисовывался transition исчезновения
 						.transition(AnyTransition.scale)
 						.padding()
 				}
@@ -109,7 +109,7 @@ struct PlayerMainView: View {
 
 struct ColoredCircleButton: View {
 	@EnvironmentObject var player: Player
-	var soundBundle: SoundBundle
+	var soundBundle: SoundWithPlayer
 	
 	/// Индекс звука в плейлисте
 	var index: Int {
@@ -123,7 +123,7 @@ struct ColoredCircleButton: View {
 	
 	/// Название звука, склеивается из названий звуков, соединенных символом новой строки
 	var text: String {
-		soundBundle.sounds
+		soundBundle.names
 			.map { $0.capitalized }
 			.joined(separator: "\n")
 	}
@@ -140,8 +140,8 @@ struct ColoredCircleButton: View {
 	
 	var body: some View {
 		Circle()
-			.frame(width: player.playlist.count == 1 ? 220 : diameter,
-						 height: player.playlist.count == 1 ? 220 : diameter)
+			.frame(width: player.playlist.count == 1 ? Constants.offset.height * 2 : diameter,
+						 height: player.playlist.count == 1 ? Constants.offset.height * 2 : diameter)
 			.overlay {
 				Text(text)
 					.foregroundColor(.white)
@@ -170,6 +170,7 @@ fileprivate struct Constants {
 	static let cornerRadius: CGFloat = 15
 	static let plusButtonScale: CGFloat = 0.7
 	static let colors: [Color] = [.purple, .mint, .red, .yellow, .green, .orange, .cyan, .pink, .brown]
+	static let basicFontSize: CGFloat = 55.0
 }
 
 

@@ -14,7 +14,7 @@ import AVFoundation
 /// Struct, that simultaniously plays multiple files from the `playlist`.
 struct MultipleSoundsPlayer {
 	/// Storage for sounds, that are scheduled to play.
-	var playlist: [SoundBundle] = [] // SoundsStore.preinstalledSounds
+	var playlist: [SoundWithPlayer] = [] // SoundsStore.preinstalledSounds
 	
 	/// Initialize AVAudioPlayer for each SoundsBundle, set it up and play. All sounds are looped and needs to be stopped somewhere else in the code.
 	mutating func play() {
@@ -41,12 +41,12 @@ struct MultipleSoundsPlayer {
 	}
 	
 	/// Add sounds to playlist
-	mutating func add(_ sounds: [SoundBundle]) {
+	mutating func add(_ sounds: [SoundWithPlayer]) {
 		playlist.append(contentsOf: sounds)
 	}
 	
 	/// Удалить `sounds` из плейлиста
-	mutating func remove(_ sounds: [SoundBundle]) {
+	mutating func remove(_ sounds: [SoundWithPlayer]) {
 		for sound in sounds {
 			if let index = playlist.index(matching: sound) {
 				playlist.remove(at: index)
@@ -54,7 +54,7 @@ struct MultipleSoundsPlayer {
 		}
 	}
 	
-	mutating func updateSound(matching anotherSound: SoundBundle) {
+	mutating func updateSound(matching anotherSound: SoundWithPlayer) {
 		if let index = playlist.index(matching: anotherSound) {
 			playlist[index] = anotherSound
 		}
@@ -66,7 +66,7 @@ struct MultipleSoundsPlayer {
 class Player: ObservableObject {
 	@Published private(set) var player = MultipleSoundsPlayer()
 	
-	var playlist: [SoundBundle] {
+	var playlist: [SoundWithPlayer] {
 		player.playlist
 	}
 	
@@ -83,19 +83,19 @@ class Player: ObservableObject {
 		}
 	}
 	
-	/// Удалить из `sounds` звуки, которые уже есть в плейлисте. Добавить оставшиеся в плейлист.
-	func add(_ sounds: [SoundBundle]) {
-		// let sounds = SoundsStore.preinstalledSounds.filter { sounds.contains($0.id) }
+	/// Удалить из `names` звуки, которые уже есть в плейлисте. Добавить оставшиеся в плейлист.
+	func add(_ sounds: [SoundWithPlayer]) {
+		// let names = SoundsStore.preinstalledSounds.filter { names.contains($0.id) }
 		let uniqueSounds = sounds.filter { !playlist.contains($0) }
 		player.add(uniqueSounds)
 	}
 	
 	/// Удалить `sounds` из плейлиста
-	func remove(_ sounds: [SoundBundle]) {
+	func remove(_ sounds: [SoundWithPlayer]) {
 		player.remove(sounds)
 	}
 	
-	func updateSound(matching anotherSound: SoundBundle) {
+	func updateSound(matching anotherSound: SoundWithPlayer) {
 		player.updateSound(matching: anotherSound)
 	}
 	

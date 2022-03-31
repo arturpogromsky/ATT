@@ -18,7 +18,7 @@ struct SoundsListView: View {
 		VStack(alignment: .center) {
 			
 			List(SoundsStore.preinstalledSounds, selection: $selectedSoundsID) { sound in
-				Text(sound.sounds.joined(separator: ", ").capitalized)
+				Text(sound.names.joined(separator: ", ").capitalized)
 			}
 			.environment(\.editMode, $editMode)
 			
