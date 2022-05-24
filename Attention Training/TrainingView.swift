@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct TrainingView: View {
-	@State private var currentSoundName = "Голубцов с говном"
+	@State private var currentSoundName = "TestName"
 	@EnvironmentObject var player: Player
 	var timer: Timer?
 	
